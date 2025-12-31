@@ -1,20 +1,17 @@
 import 'package:app/features/profile/widgets/profile_page.dart';
 import 'package:app/main.dart';
 import 'package:app/shared/models/nav_item_data.dart';
+import 'package:app/shared/widgets/nav_item.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
-    final int currentIndex;
-    final Function(int) onTap;
+  final int currentIndex;
+  final Function(int) onTap;
 
-  const NavBar({
-      super.key,
-      required this.currentIndex,
-      required this.onTap
-    });
+  const NavBar({super.key, required this.currentIndex, required this.onTap});
 
   static final List<NavItemData> _navItems = [
-        NavItemData(
+    NavItemData(
       icon: Icons.home_rounded,
       label: 'Home',
       page: const ProfilePage(),
@@ -37,7 +34,6 @@ class NavBar extends StatelessWidget {
     ),
   ];
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,7 +52,16 @@ class NavBar extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: ,
+            children: List.generate(
+              _navItems.length,
+              (index) => NavItem(
+                icon: _navItems[index].icon,
+                label: _navItems[index].label,
+                isSelected: currentIndex == index,
+                badgeCount: _navItems[index].badgeCount,
+                onTap: () => onTap(index),
+              ),
+            ),
           ),
         ),
       ),

@@ -11,5 +11,5 @@ class NavItemData {
     required this.label,
     required this.page,
     this.badgeCount,
-  })
+  });
 }

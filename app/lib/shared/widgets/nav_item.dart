@@ -1,14 +1,14 @@
 import 'package:app/shared/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
-class _NavItem extends StatelessWidget {
+class NavItem extends StatelessWidget {
   final IconData icon;
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
   final int? badgeCount;
 
-  const _NavItem({
+  const NavItem({
     required this.icon,
     required this.label,
     required this.isSelected,
