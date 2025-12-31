@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
@@ -24,11 +25,11 @@ func (h *AlarmHandler) GetAllAlarms(c echo.Context) error {
 }
 
 func (h *AlarmHandler) GetAlarmByID(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := uuid.Parse(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid id"})
 	}
-	alarm, err := h.service.GetAlarmByID(uint(id))
+	alarm, err := h.service.GetAlarmByID(id)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]string{"error": "alarm not found"})
 	}
@@ -36,7 +37,7 @@ func (h *AlarmHandler) GetAlarmByID(c echo.Context) error {
 }
 
 func (h *AlarmHandler) CreateAlarm(c echo.Context) error {
-	var a Alarm
+	var a CreateAlarmRequestDto
 	if err := c.Bind(&a); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}

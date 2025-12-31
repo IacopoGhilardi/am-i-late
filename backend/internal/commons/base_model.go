@@ -12,3 +12,8 @@ type BaseModelWithSafeDelete struct {
 	BaseModel
 	DeletedAt *time.Time `gorm:"column:deleted_at;index"`
 }
+
+type Location struct {
+	Latitude  float64 `gorm:"column:latitude;type:decimal(9,6)"`
+	Longitude float64 `gorm:"column:longitude;type:decimal(9,6)"`
+}

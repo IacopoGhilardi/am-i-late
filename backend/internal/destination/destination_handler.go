@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/iacopoGhilardi/amILate/pkg/logger"
 	"github.com/labstack/echo/v4"
 )
 
@@ -16,11 +17,16 @@ func NewDestinationHandler(service *DestinationService) *DestinationHandler {
 }
 
 func (h *DestinationHandler) GetAllDestinations(c echo.Context) error {
+	logger.Info("Getting all destinations")
 	dests, err := h.service.GetAllDestinations()
+	var destinationDtos []DestinationDto
+	for _, d := range dests {
+		destinationDtos = append(destinationDtos, *MapDestinationToDto(d))
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
-	return c.JSON(http.StatusOK, dests)
+	return c.JSON(http.StatusOK, destinationDtos)
 }
 
 func (h *DestinationHandler) GetDestinationByID(c echo.Context) error {
@@ -36,11 +42,11 @@ func (h *DestinationHandler) GetDestinationByID(c echo.Context) error {
 }
 
 func (h *DestinationHandler) CreateDestination(c echo.Context) error {
-	var d Destination
-	if err := c.Bind(&d); err != nil {
+	var dto CreateDestinationRequestDto
+	if err := c.Bind(&dto); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
-	created, err := h.service.CreateDestination(&d)
+	created, err := h.service.CreateDestination(MapFromCreateReq(dto))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}

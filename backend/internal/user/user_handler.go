@@ -14,6 +14,20 @@ func NewUserHandler(service *UserService) *UserHandler {
 	return &UserHandler{service: service}
 }
 
+func (h *UserHandler) Register(c echo.Context) error {
+	return c.JSON(http.StatusOK, map[string]string{
+		"status": "OK",
+		"token":  "Ciao",
+	})
+}
+
+func (h *UserHandler) Login(c echo.Context) error {
+	return c.JSON(http.StatusOK, map[string]string{
+		"status": "OK",
+		"token":  "Ciao",
+	})
+}
+
 func (h *UserHandler) GetAllUsers(c echo.Context) error {
 	users, err := h.service.GetAllUsers()
 	if err != nil {

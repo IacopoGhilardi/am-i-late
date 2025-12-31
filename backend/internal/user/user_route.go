@@ -11,4 +11,5 @@ func InitUserRoutes(e *echo.Group, service *UserService) {
 	e.GET("/users/:id", handler.GetUserByID)
 	e.POST("/users", handler.CreateUser)
 	e.DELETE("/users/:id", handler.DeleteUser)
+	e.POST("/users/login", handler.Login)
 }

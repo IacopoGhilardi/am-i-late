@@ -1,14 +1,18 @@
 package config
 
 import (
-	"log"
-
+	"github.com/iacopoGhilardi/amILate/pkg/logger"
 	"github.com/spf13/viper"
 )
 
 type Config struct {
 	ServerPort string `mapstructure:"SERVER_PORT" default:"1323"`
 	DbUrl      string `mapstructure:"DB_URL"`
+
+	//Tom Tom
+	TomTomApiKey  string `mapstructure:"REST_CLIENT_TOMTOM_API_KEY"`
+	TomTomBaseUrl string `mapstructure:"REST_CLIENT_TOMTOM_BASE_URL"`
+	TomTomTimeout int    `mapstructure:"REST_CLIENT_TOMTOM_TIMEOUT" default:"10"`
 }
 
 func LoadConfig(path string) (Config, error) {
@@ -20,11 +24,11 @@ func LoadConfig(path string) (Config, error) {
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
-		log.Printf("No config file found, using environment variables: %v", err)
+		logger.Error("No config file found, using environment variables: %v", err)
 	}
 
 	if err := viper.Unmarshal(&config); err != nil {
-		log.Printf("Failed to unmarshal config: %v", err)
+		logger.Error("Failed to unmarshal config: %v", err)
 		return config, err
 	}
 
