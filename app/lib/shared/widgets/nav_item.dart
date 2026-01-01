@@ -20,7 +20,7 @@ class NavItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final color =
         isSelected
-            ? AppTheme.primaryColor
+            ? AppTheme.secondaryColor
             : AppTheme.textSecondary.withOpacity(0.6);
 
     return GestureDetector(
@@ -37,7 +37,7 @@ class NavItem extends StatelessWidget {
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeOut,
-                  child: Icon(icon, color: color, size: isSelected ? 30 : 20),
+                  child: Icon(icon, color: color, size: isSelected ? 30 : 25),
                 ),
                 const SizedBox(height: 4),
                 AnimatedDefaultTextStyle(

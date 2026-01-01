@@ -1,3 +1,6 @@
+import 'package:app/features/calendar/widgets/calendar_page.dart';
+import 'package:app/features/destination/widgets/destination_page.dart';
+import 'package:app/features/home/widgets/home_page.dart';
 import 'package:app/features/profile/widgets/profile_page.dart';
 import 'package:app/main.dart';
 import 'package:app/shared/models/nav_item_data.dart';
@@ -14,17 +17,17 @@ class NavBar extends StatelessWidget {
     NavItemData(
       icon: Icons.home_rounded,
       label: 'Home',
-      page: const ProfilePage(),
+      page: const HomePage(),
     ),
     NavItemData(
       icon: Icons.location_on_rounded,
       label: 'Destinazioni',
-      page: const ProfilePage(),
+      page: const DestinationPage(),
     ),
     NavItemData(
       icon: Icons.calendar_today_rounded,
       label: 'Calendario',
-      page: const ProfilePage(),
+      page: const CalendarPage(),
       badgeCount: 3,
     ),
     NavItemData(
@@ -33,6 +36,8 @@ class NavBar extends StatelessWidget {
       page: const ProfilePage(),
     ),
   ];
+
+  static List<Widget> get pages => _navItems.map((item) => item.page).toList();
 
   @override
   Widget build(BuildContext context) {
