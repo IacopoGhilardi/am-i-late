@@ -24,7 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 email: 'email.92@gmail.com',
               ),
             ),
-            ProfileGeneralSetting(),
+            ProfileGeneralSettings(),
           ],
         ),
       ),

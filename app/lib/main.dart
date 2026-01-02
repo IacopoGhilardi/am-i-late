@@ -1,4 +1,4 @@
-import 'package:app/shared/services/settings_service.dart';
+import 'package:app/core/services/settings_service.dart';
 import 'package:app/shared/theme/app_theme.dart';
 import 'package:app/shared/widgets/nav_bar.dart';
 import 'package:flutter/material.dart';

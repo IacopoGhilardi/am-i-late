@@ -20,7 +20,7 @@ class NavItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final color =
         isSelected
-            ? AppTheme.secondaryColor
+            ? AppTheme.primaryColor
             : AppTheme.textSecondary.withOpacity(0.6);
 
     return GestureDetector(

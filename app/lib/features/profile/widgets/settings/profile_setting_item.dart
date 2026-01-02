@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ProfileSettingItem extends StatelessWidget {
   final String label;
+  final String? description;
   final IconData? icon;
   final VoidCallback onTap;
   final Widget? trailing;
@@ -9,6 +10,7 @@ class ProfileSettingItem extends StatelessWidget {
   const ProfileSettingItem({
     super.key,
     required this.label,
+    this.description,
     this.icon,
     required this.onTap,
     this.trailing,
@@ -23,10 +25,47 @@ class ProfileSettingItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Row(
           children: [
-            if (icon != null) Icon(icon, size: 24),
-            if (icon != null) const SizedBox(width: 12),
-            Expanded(child: Text(label, style: TextStyle(fontSize: 16))),
-            trailing ?? Icon(Icons.chevron_right),
+            if (icon != null) ...[
+              Icon(icon, size: 24, color: const Color(0xFF2C2C2C)),
+              const SizedBox(width: 12),
+            ],
+
+            // Label + Description
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF2C2C2C),
+                    ),
+                  ),
+                  if (description != null) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      description!,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Color(0xFF6C757D),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+
+            // Trailing (switch, arrow, text, ecc.)
+            if (trailing != null)
+              trailing!
+            else
+              const Icon(
+                Icons.chevron_right,
+                color: Color(0xFF6C757D),
+                size: 20,
+              ),
           ],
         ),
       ),
