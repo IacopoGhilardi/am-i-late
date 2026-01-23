@@ -1,12 +1,13 @@
 import 'package:app/core/services/settings_service.dart';
+import 'package:app/features/auth/widgets/landing_page.dart';
 import 'package:app/shared/theme/app_theme.dart';
 import 'package:app/shared/widgets/nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize all settings from your phone
+  await initializeDateFormatting('it_IT', null);
   await SettingsService().init();
 
   runApp(const MyApp());
@@ -23,7 +24,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: AppTheme.secondaryColor),
       ),
-      home: const MainNavigationScreen(),
+      initialRoute: '/login',
+      routes: {
+        '/': (context) => const LandingPage(),
+        '/home': (context) => const MainNavigationScreen(),
+      },
     );
   }
 }

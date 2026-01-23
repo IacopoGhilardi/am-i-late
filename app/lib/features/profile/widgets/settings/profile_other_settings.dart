@@ -3,34 +3,35 @@ import 'package:app/features/profile/widgets/settings/profile_setting_section.da
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class ProfilePrivacySettings extends StatelessWidget {
-  const ProfilePrivacySettings({super.key});
+class ProfileOtherSettings extends StatelessWidget {
+  const ProfileOtherSettings({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ProfileSettingsSection(
-      title: 'Privacy e sicurezza',
-      icon: LucideIcons.lock,
+      title: 'Altro',
+      icon: LucideIcons.badgeInfo,
       children: [
         ProfileSettingItem(
-          label: 'Password e sicurezza',
-          icon: LucideIcons.shield,
+          label: 'Centro assistenza',
+          icon: LucideIcons.helpCircle,
           onTap: () {
-            // TODO: Naviga a pagina password
+            // TODO: Apri centro assistenza
           },
         ),
         ProfileSettingItem(
-          label: 'Privacy dati',
-          icon: LucideIcons.shieldAlert,
+          label: 'Termini e condizioni',
+          icon: LucideIcons.folder,
           onTap: () {
-            // TODO: Naviga a pagina privacy
+            // TODO: Apri termini
           },
         ),
         ProfileSettingItem(
-          label: 'Cronologia viaggi',
-          icon: LucideIcons.history,
+          label: 'Informazioni app',
+          icon: LucideIcons.info,
+          description: 'Versione 1.0.0',
           onTap: () {
-            // TODO: Naviga a cronologia
+            // TODO: Mostra info app
           },
         ),
       ],

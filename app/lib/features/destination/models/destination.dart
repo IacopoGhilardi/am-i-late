@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Destination {
   final String? id;
   final String? name;
@@ -6,8 +8,10 @@ class Destination {
   final double? longitude;
   final String? googleApiId;
   final String transportMode;
+  final Icon? icon;
 
   Destination({
+    this.icon,
     this.id,
     this.name,
     required this.formattedAddress,
@@ -33,5 +37,9 @@ class Destination {
     'formatted_address': formattedAddress,
     'latitude': latitude,
     'longitude': longitude,
+    'id': id,
+    'name': name,
+    'google_place_id': googleApiId,
+    'transport_mode': transportMode,
   };
 }

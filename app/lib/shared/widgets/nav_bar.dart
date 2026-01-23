@@ -2,7 +2,6 @@ import 'package:app/features/calendar/widgets/calendar_page.dart';
 import 'package:app/features/destination/widgets/destination_page.dart';
 import 'package:app/features/home/widgets/home_page.dart';
 import 'package:app/features/profile/widgets/profile_page.dart';
-import 'package:app/main.dart';
 import 'package:app/shared/models/nav_item_data.dart';
 import 'package:app/shared/widgets/nav_item.dart';
 import 'package:flutter/material.dart';
@@ -20,16 +19,16 @@ class NavBar extends StatelessWidget {
       page: const HomePage(),
     ),
     NavItemData(
-      icon: Icons.location_on_rounded,
-      label: 'Destinazioni',
-      page: const DestinationPage(),
-    ),
-    NavItemData(
       icon: Icons.calendar_today_rounded,
       label: 'Calendario',
       page: const CalendarPage(),
       badgeCount: 3,
     ),
+    // NavItemData(
+    //   icon: Icons.location_on_rounded,
+    //   label: 'Destinazioni',
+    //   page: const DestinationPage(),
+    // ),
     NavItemData(
       icon: Icons.person_rounded,
       label: 'Profilo',
@@ -54,14 +53,13 @@ class NavBar extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(
               _navItems.length,
               (index) => NavItem(
                 icon: _navItems[index].icon,
-                label: _navItems[index].label,
                 isSelected: currentIndex == index,
                 badgeCount: _navItems[index].badgeCount,
                 onTap: () => onTap(index),

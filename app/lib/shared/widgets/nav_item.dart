@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 class NavItem extends StatelessWidget {
   final IconData icon;
-  final String label;
   final bool isSelected;
+  final String? label;
   final VoidCallback onTap;
   final int? badgeCount;
 
   const NavItem({
     required this.icon,
-    required this.label,
+    this.label,
     required this.isSelected,
     required this.onTap,
     this.badgeCount,
@@ -39,17 +39,6 @@ class NavItem extends StatelessWidget {
                   curve: Curves.easeOut,
                   child: Icon(icon, color: color, size: isSelected ? 30 : 25),
                 ),
-                const SizedBox(height: 4),
-                AnimatedDefaultTextStyle(
-                  style: TextStyle(
-                    color: color,
-                    fontSize: isSelected ? 11.5 : 11,
-                    fontWeight:
-                        isSelected ? FontWeight.bold : FontWeight.normal,
-                  ),
-                  duration: const Duration(milliseconds: 200),
-                  child: Text(label),
-                ),
               ],
             ),
             if (badgeCount != null && badgeCount! > 0)
@@ -60,17 +49,6 @@ class NavItem extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                     horizontal: 6,
                     vertical: 2,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppTheme.errorColor,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppTheme.errorColor.withOpacity(0.3),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
                   ),
                   constraints: const BoxConstraints(
                     minHeight: 18,
