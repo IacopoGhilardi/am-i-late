@@ -1,4 +1,4 @@
-package destination
+package dto
 
 import "github.com/google/uuid"
 
@@ -9,7 +9,6 @@ type DestinationDto struct {
 	GooglePlaceID    string    `json:"google_place_id"`
 	Latitude         float64   `json:"latitude" validate:"required"`
 	Longitude        float64   `json:"longitude" validate:"required"`
-	TransportMode    string    `json:"transport_mode" validate:"required"`
 }
 
 type CreateDestinationRequestDto struct {

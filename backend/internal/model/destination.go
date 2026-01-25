@@ -1,18 +1,14 @@
-package destination
+package model
 
 import (
-	"slices"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/iacopoGhilardi/amILate/internal/alarm"
 	"github.com/iacopoGhilardi/amILate/internal/commons"
 )
 
-var availableTransportModes = []string{"car", "bus", "train", "plane"}
-
 type Destination struct {
-	commons.BaseModelWithSafeDelete
+	commons.BaseModel
 
 	PublicID          uuid.UUID         `gorm:"column:public_id;type:uuid;unique;not null"`
 	UserID            uint              `gorm:"column:user_id;not null;index"`
@@ -20,9 +16,13 @@ type Destination struct {
 	Name              string            `gorm:"column:name;type:varchar(255);not null"`
 	AddressComponents AddressComponents `gorm:"embedded"`
 	Location          commons.Location  `gorm:"embedded"`
-	TransportMode     string            `gorm:"column:transport_mode;type:varchar(255);not null"`
 	TimeZone          string            `gorm:"column:time_zone;type:varchar(255);not null"`
-	Alarms            []alarm.Alarm     `gorm:"foreignKey:DestinationID"`
+	appointments      []Appointment     `gorm:"foreignKey:DestinationId"`
+	Metadata          Metadata
+}
+
+func (Destination) TableName() string {
+	return "destinations"
 }
 
 type AddressComponents struct {
@@ -31,11 +31,7 @@ type AddressComponents struct {
 }
 
 type Metadata struct {
-	VisitCount    int        `gorm:"column:visit_count"`
-	LastVisitedAt *time.Time `gorm:"column:last_visited_at;index"`
-	IsFavorite    bool       `gorm:"column:is_favorite"`
-}
-
-func (d *Destination) ValidateTransport(transportMode string) bool {
-	return slices.Contains(availableTransportModes, transportMode)
+	IsSaved     bool          `gorm:"column:is_saved;default:false"`
+	LastUsedAt  *time.Time    `gorm:"column:last_used_at;index"`
+	DeleteAfter time.Duration `gorm:"column:delete_after;type:varchar(255);not null"`
 }

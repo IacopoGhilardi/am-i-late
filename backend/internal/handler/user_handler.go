@@ -1,16 +1,19 @@
-package user
+package handler
 
 import (
 	"net/http"
 
+	"github.com/iacopoGhilardi/amILate/internal/model"
+	"github.com/iacopoGhilardi/amILate/internal/service"
+	"github.com/iacopoGhilardi/amILate/internal/utils"
 	"github.com/labstack/echo/v4"
 )
 
 type UserHandler struct {
-	service *UserService
+	service *service.UserService
 }
 
-func NewUserHandler(service *UserService) *UserHandler {
+func NewUserHandler(service *service.UserService) *UserHandler {
 	return &UserHandler{service: service}
 }
 
@@ -37,7 +40,7 @@ func (h *UserHandler) GetAllUsers(c echo.Context) error {
 }
 
 func (h *UserHandler) GetUserByID(c echo.Context) error {
-	id, err := parseIDParam(c, "id")
+	id, err := utils.ParseIDParam(c, "id")
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid id"})
 	}
@@ -49,7 +52,7 @@ func (h *UserHandler) GetUserByID(c echo.Context) error {
 }
 
 func (h *UserHandler) CreateUser(c echo.Context) error {
-	var u User
+	var u model.User
 	if err := c.Bind(&u); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
@@ -61,7 +64,7 @@ func (h *UserHandler) CreateUser(c echo.Context) error {
 }
 
 func (h *UserHandler) DeleteUser(c echo.Context) error {
-	id, err := parseIDParam(c, "id")
+	id, err := utils.ParseIDParam(c, "id")
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid id"})
 	}

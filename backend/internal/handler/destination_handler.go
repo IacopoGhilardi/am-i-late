@@ -1,27 +1,30 @@
-package destination
+package handler
 
 import (
 	"net/http"
 	"strconv"
 
+	"github.com/iacopoGhilardi/amILate/internal/dto"
+	"github.com/iacopoGhilardi/amILate/internal/mapper"
+	service2 "github.com/iacopoGhilardi/amILate/internal/service"
 	"github.com/iacopoGhilardi/amILate/pkg/logger"
 	"github.com/labstack/echo/v4"
 )
 
 type DestinationHandler struct {
-	service *DestinationService
+	service *service2.DestinationService
 }
 
-func NewDestinationHandler(service *DestinationService) *DestinationHandler {
+func NewDestinationHandler(service *service2.DestinationService) *DestinationHandler {
 	return &DestinationHandler{service: service}
 }
 
 func (h *DestinationHandler) GetAllDestinations(c echo.Context) error {
 	logger.Info("Getting all destinations")
 	dests, err := h.service.GetAllDestinations()
-	var destinationDtos []DestinationDto
+	var destinationDtos []dto.DestinationDto
 	for _, d := range dests {
-		destinationDtos = append(destinationDtos, *MapDestinationToDto(d))
+		destinationDtos = append(destinationDtos, *mapper.MapDestinationToDto(d))
 	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -42,11 +45,11 @@ func (h *DestinationHandler) GetDestinationByID(c echo.Context) error {
 }
 
 func (h *DestinationHandler) CreateDestination(c echo.Context) error {
-	var dto CreateDestinationRequestDto
+	var dto dto.CreateDestinationRequestDto
 	if err := c.Bind(&dto); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
-	created, err := h.service.CreateDestination(MapFromCreateReq(dto))
+	created, err := h.service.CreateDestination(mapper.MapFromCreateReq(dto))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}

@@ -1,12 +1,11 @@
 package main
 
 import (
-	"github.com/iacopoGhilardi/amILate/internal/alarm"
 	"github.com/iacopoGhilardi/amILate/internal/commons"
 	"github.com/iacopoGhilardi/amILate/internal/config"
 	"github.com/iacopoGhilardi/amILate/internal/db"
-	"github.com/iacopoGhilardi/amILate/internal/destination"
-	"github.com/iacopoGhilardi/amILate/internal/user"
+	"github.com/iacopoGhilardi/amILate/internal/route"
+	"github.com/iacopoGhilardi/amILate/internal/service"
 	"github.com/iacopoGhilardi/amILate/pkg/logger"
 	"github.com/labstack/echo/v4"
 )
@@ -28,14 +27,13 @@ func main() {
 	commons.InitUtilityRoute(apiV1)
 
 	//User
-	service := user.NewUserService()
-	user.InitUserRoutes(apiV1, service)
-
-	//Alarm
-	alarm.InitAlarmRoutes(apiV1)
+	service := service.NewUserService()
+	route.InitUserRoutes(apiV1, service)
 
 	//Destination
-	destination.InitDestinationRoutes(apiV1)
+	route.InitDestinationRoutes(apiV1)
+
+	//Todo: Rotte
 
 	echoInstance.Logger.Fatal(echoInstance.Start(":" + cfg.ServerPort))
 }
