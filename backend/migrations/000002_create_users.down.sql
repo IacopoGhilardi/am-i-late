@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS amilate.users
+DROP TABLE IF EXISTS amilate.users CASCADE;
