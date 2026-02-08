@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/iacopoGhilardi/amILate/pkg/logger"
+	"github.com/iacopoGhilardi/amILate/internal/utils/logger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

@@ -5,8 +5,8 @@ import (
 	"github.com/iacopoGhilardi/amILate/internal/config"
 	"github.com/iacopoGhilardi/amILate/internal/db"
 	"github.com/iacopoGhilardi/amILate/internal/route"
-	"github.com/iacopoGhilardi/amILate/internal/service"
-	"github.com/iacopoGhilardi/amILate/pkg/logger"
+	"github.com/iacopoGhilardi/amILate/internal/utils/logger"
+	"github.com/iacopoGhilardi/amILate/internal/utils/security"
 	"github.com/labstack/echo/v4"
 )
 
@@ -15,9 +15,9 @@ func main() {
 	if err != nil {
 		logger.Fatal("cannot load config: %v", err)
 	}
-
 	logger.Info("config loaded: %+v", cfg)
 
+	security.SetJWTSecret(cfg.JwtSecret)
 	db.Connect(cfg.DbUrl)
 	echoInstance := echo.New()
 
@@ -27,13 +27,11 @@ func main() {
 	commons.InitUtilityRoute(apiV1)
 
 	//User
-	service := service.NewUserService()
-	route.InitUserRoutes(apiV1, service)
+	route.InitUserRoutes(apiV1)
 
 	//Destination
 	route.InitDestinationRoutes(apiV1)
-
-	//Todo: Rotte
+	route.InitAppointmentRoutes(apiV1)
 
 	echoInstance.Logger.Fatal(echoInstance.Start(":" + cfg.ServerPort))
 }

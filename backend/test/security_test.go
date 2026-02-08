@@ -5,7 +5,7 @@ import (
 
 	"fmt"
 
-	"github.com/iacopoGhilardi/amILate/pkg/security"
+	"github.com/iacopoGhilardi/amILate/internal/utils/security"
 	"github.com/stretchr/testify/assert"
 )
 

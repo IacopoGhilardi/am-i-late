@@ -1,13 +1,14 @@
 package config
 
 import (
-	"github.com/iacopoGhilardi/amILate/pkg/logger"
+	"github.com/iacopoGhilardi/amILate/internal/utils/logger"
 	"github.com/spf13/viper"
 )
 
 type Config struct {
 	ServerPort string `mapstructure:"SERVER_PORT" default:"1323"`
 	DbUrl      string `mapstructure:"DB_URL"`
+	JwtSecret  string `mapstructure:"JWT_SECRET"`
 
 	//Tom Tom
 	TomTomApiKey  string `mapstructure:"REST_CLIENT_TOMTOM_API_KEY"`

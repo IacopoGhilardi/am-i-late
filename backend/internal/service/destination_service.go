@@ -6,12 +6,12 @@ import (
 )
 
 type DestinationService struct {
-	repo *repository.DestinationRepository
+	repo repository.DestinationRepositoryInterface
 }
 
-func NewDestinationService() *DestinationService {
+func NewDestinationService(repo repository.DestinationRepositoryInterface) *DestinationService {
 	return &DestinationService{
-		repo: repository.NewDestinationRepository(),
+		repo: repo,
 	}
 }
 
@@ -25,7 +25,12 @@ func (s *DestinationService) GetDestinationByID(id uint) (*model.Destination, er
 
 func (s *DestinationService) CreateDestination(d *model.Destination) (*model.Destination, error) {
 	err := s.repo.Save(d)
-	return d, err
+
+	if err != nil {
+		return nil, err
+	}
+
+	return d, nil
 }
 
 func (s *DestinationService) DeleteDestination(id uint) error {

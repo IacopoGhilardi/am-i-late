@@ -5,8 +5,8 @@ import (
 	"github.com/iacopoGhilardi/amILate/internal/model"
 )
 
-func MapAppointmentToDto(appointment model.Appointment) dto.AppointmentDto {
-	return dto.AppointmentDto{
+func MapAppointmentToDto(appointment model.Appointment) *dto.AppointmentDto {
+	return &dto.AppointmentDto{
 		ID:                     appointment.PublicId,
 		Destination:            *MapDestinationToDto(appointment.Destination),
 		EstimatedTravelMinutes: appointment.EstimatedTravelMinutes,
@@ -16,8 +16,8 @@ func MapAppointmentToDto(appointment model.Appointment) dto.AppointmentDto {
 	}
 }
 
-func MapFromCreateAppointmentRequest(request dto.CreateAppointmentRequestDto) model.Appointment {
-	return model.Appointment{
+func MapFromCreateAppointmentRequest(request dto.CreateAppointmentRequestDto) *model.Appointment {
+	return &model.Appointment{
 		TransportMode: request.TransportMode,
 		ScheduledAt:   request.ScheduledAt,
 	}

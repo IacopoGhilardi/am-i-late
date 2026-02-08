@@ -4,18 +4,17 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/iacopoGhilardi/amILate/internal/commons"
 )
 
 type Destination struct {
-	commons.BaseModel
+	BaseModel
 
 	PublicID          uuid.UUID         `gorm:"column:public_id;type:uuid;unique;not null"`
 	UserID            uint              `gorm:"column:user_id;not null;index"`
 	FullAddress       string            `gorm:"column:full_address;type:varchar(255);not null"`
 	Name              string            `gorm:"column:name;type:varchar(255);not null"`
 	AddressComponents AddressComponents `gorm:"embedded"`
-	Location          commons.Location  `gorm:"embedded"`
+	Location          Location          `gorm:"embedded"`
 	TimeZone          string            `gorm:"column:time_zone;type:varchar(255);not null"`
 	appointments      []Appointment     `gorm:"foreignKey:DestinationId"`
 	Metadata          Metadata

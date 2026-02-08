@@ -1,0 +1,79 @@
+package service
+
+import (
+	"errors"
+
+	"github.com/iacopoGhilardi/amILate/internal/dto"
+	"github.com/iacopoGhilardi/amILate/internal/mapper"
+	"github.com/iacopoGhilardi/amILate/internal/repository"
+	"github.com/iacopoGhilardi/amILate/internal/utils/logger"
+	"github.com/iacopoGhilardi/amILate/internal/utils/security"
+	"gorm.io/gorm"
+)
+
+type AuthService struct {
+	repo *repository.UserRepository
+}
+
+func NewAuthService() *AuthService {
+	return &AuthService{
+		repo: repository.NewUserRepository(),
+	}
+}
+
+func NewAuthServiceWithRepo(repo *repository.UserRepository) *AuthService {
+	return &AuthService{repo: repo}
+}
+
+func (s *AuthService) Register(registerDto dto.RegistrationDto) (*dto.LoginResponseDto, error) {
+	logger.Info("Registering user")
+	exists, err := s.repo.EmailExists(registerDto.Email)
+	if err != nil {
+		return nil, err
+	}
+	if exists {
+		logger.Warn("Email already registered")
+		return nil, errors.New("email already registered")
+	}
+
+	if registerDto.Password != registerDto.ConfirmPassword {
+		logger.Warn("Passwords do not match")
+		return nil, errors.New(
+			"passwords do not match",
+		)
+	}
+	user := mapper.MapFromRegistrationDto(registerDto)
+
+	token, err := security.GenerateJWT(user.PublicID, user.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.LoginResponseDto{
+		Token:     token,
+		ExpiresAt: 0,
+	}, nil
+}
+
+func (s *AuthService) Login(loginDto dto.LoginDto) (*dto.LoginResponseDto, error) {
+	user, err := s.repo.FindByEmail(loginDto.Email)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.New("invalid email or password")
+		}
+		return nil, err
+	}
+
+	if !security.CheckPasswordHash(loginDto.Password, user.Password) {
+		return nil, errors.New("invalid email or password")
+	}
+
+	token, err := security.GenerateJWT(user.PublicID, user.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.LoginResponseDto{
+		Token: token,
+	}, nil
+}

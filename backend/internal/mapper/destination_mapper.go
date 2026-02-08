@@ -21,7 +21,7 @@ func MapFromCreateReq(dto dto.CreateDestinationRequestDto) *model.Destination {
 			FormattedAddress: dto.FormattedAddress,
 			GooglePlaceId:    dto.GooglePlaceID,
 		},
-		Location: commons.Location{
+		Location: model.Location{
 			Latitude:  dto.Latitude,
 			Longitude: dto.Longitude,
 		},

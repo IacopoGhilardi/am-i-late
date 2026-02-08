@@ -1,0 +1,10 @@
+with-expecter: true
+dir: "./internal/repository"
+output: "./test/mocks"
+outpkg: "mocks"
+packages:
+  github.com/tuousername/tuoprogetto/internal/repository:
+    interfaces:
+      UserRepositoryInterface:
+      AppointmentRepositoryInterface:
+      DestinationRepositoryInterface:

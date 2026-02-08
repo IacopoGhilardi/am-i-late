@@ -2,11 +2,10 @@ package model
 
 import (
 	"github.com/google/uuid"
-	"github.com/iacopoGhilardi/amILate/internal/commons"
 )
 
 type User struct {
-	commons.BaseModel
+	BaseModel
 	Email              string    `gorm:"column:email;type:varchar(255);unique;not null"`
 	Password           string    `gorm:"column:password;type:varchar(255);not null"`
 	Name               string    `gorm:"column:name;type:varchar(255);not null"`

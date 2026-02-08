@@ -1,18 +1,19 @@
 package service
 
 import (
+	"github.com/google/uuid"
 	"github.com/iacopoGhilardi/amILate/internal/model"
 	"github.com/iacopoGhilardi/amILate/internal/repository"
-	"github.com/iacopoGhilardi/amILate/pkg/security"
+	"github.com/iacopoGhilardi/amILate/internal/utils/security"
 )
 
 type UserService struct {
-	repo *repository.UserRepository
+	repo repository.UserRepositoryInterface
 }
 
-func NewUserService() *UserService {
+func NewUserService(repo repository.UserRepositoryInterface) *UserService {
 	return &UserService{
-		repo: repository.NewUserRepository(),
+		repo: repo,
 	}
 }
 
@@ -22,6 +23,14 @@ func (s *UserService) GetAllUsers() ([]model.User, error) {
 
 func (s *UserService) GetUserByID(id uint) (*model.User, error) {
 	return s.repo.Find(id)
+}
+
+func (s *UserService) GetUserByEmail(email string) (*model.User, error) {
+	return s.repo.FindByEmail(email)
+}
+
+func (s *UserService) GetUserByPublicId(publicId uuid.UUID) (*model.User, error) {
+	return s.repo.FindByPublicId(publicId)
 }
 
 func (s *UserService) CreateUser(u *model.User) (*model.User, error) {

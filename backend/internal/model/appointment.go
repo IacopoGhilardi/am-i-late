@@ -4,7 +4,6 @@ import (
 	"slices"
 
 	"github.com/google/uuid"
-	"github.com/iacopoGhilardi/amILate/internal/commons"
 )
 
 var transportModes = []string{"car", "public_transport", "foot"}
@@ -13,7 +12,7 @@ var notificationStates = []string{"pending", "monitoring", "sent", "cancelled"}
 var statuses = []string{"scheduled", "completed", "cancelled"}
 
 type Appointment struct {
-	commons.BaseModel
+	BaseModel
 
 	DestinationID          uint        `gorm:"column:destination_id;not null;index"`
 	Destination            Destination `gorm:"foreignKey:DestinationID"`

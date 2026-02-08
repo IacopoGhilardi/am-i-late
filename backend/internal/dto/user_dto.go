@@ -11,14 +11,3 @@ type UserDto struct {
 	TermsAccepted      bool
 	LocationPermission bool
 }
-
-type RegistrationDto struct {
-	Email           string `json:"email"`
-	Password        string `json:"password"`
-	ConfirmPassword string `json:"confirm_password"`
-}
-
-type LoginDto struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}

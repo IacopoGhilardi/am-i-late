@@ -6,16 +6,16 @@ import (
 
 	"github.com/iacopoGhilardi/amILate/internal/dto"
 	"github.com/iacopoGhilardi/amILate/internal/mapper"
-	service2 "github.com/iacopoGhilardi/amILate/internal/service"
-	"github.com/iacopoGhilardi/amILate/pkg/logger"
+	"github.com/iacopoGhilardi/amILate/internal/service"
+	"github.com/iacopoGhilardi/amILate/internal/utils/logger"
 	"github.com/labstack/echo/v4"
 )
 
 type DestinationHandler struct {
-	service *service2.DestinationService
+	service *service.DestinationService
 }
 
-func NewDestinationHandler(service *service2.DestinationService) *DestinationHandler {
+func NewDestinationHandler(service *service.DestinationService) *DestinationHandler {
 	return &DestinationHandler{service: service}
 }
 

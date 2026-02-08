@@ -12,7 +12,7 @@ func InitUtilityRoute(e *echo.Group) {
 	e.GET("/health", func(c echo.Context) error {
 		if err := db.Ping(); err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]string{
-				"status": "db unreachable",
+				"status": "Db unreachable",
 				"error":  err.Error(),
 			})
 		}
