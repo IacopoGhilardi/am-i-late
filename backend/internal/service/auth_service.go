@@ -12,17 +12,13 @@ import (
 )
 
 type AuthService struct {
-	repo *repository.UserRepository
+	repo repository.UserRepositoryInterface
 }
 
-func NewAuthService() *AuthService {
+func NewAuthService(userRepo repository.UserRepositoryInterface) *AuthService {
 	return &AuthService{
-		repo: repository.NewUserRepository(),
+		repo: userRepo,
 	}
-}
-
-func NewAuthServiceWithRepo(repo *repository.UserRepository) *AuthService {
-	return &AuthService{repo: repo}
 }
 
 func (s *AuthService) Register(registerDto dto.RegistrationDto) (*dto.LoginResponseDto, error) {
@@ -43,6 +39,18 @@ func (s *AuthService) Register(registerDto dto.RegistrationDto) (*dto.LoginRespo
 		)
 	}
 	user := mapper.MapFromRegistrationDto(registerDto)
+	hashedPassword, err := security.HashPassword(registerDto.Password)
+	if err != nil {
+		logger.Error("Error hashing password: " + err.Error())
+		return nil, err
+	}
+	user.Password = hashedPassword
+
+	err = s.repo.Save(user)
+	if err != nil {
+		logger.Error("Error saving user: " + err.Error())
+		return nil, err
+	}
 
 	token, err := security.GenerateJWT(user.PublicID, user.Email)
 	if err != nil {

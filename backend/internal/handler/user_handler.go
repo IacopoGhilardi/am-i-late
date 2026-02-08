@@ -2,7 +2,9 @@ package handler
 
 import (
 	"net/http"
+	"strings"
 
+	"github.com/iacopoGhilardi/amILate/internal/dto"
 	"github.com/iacopoGhilardi/amILate/internal/model"
 	"github.com/iacopoGhilardi/amILate/internal/service"
 	"github.com/iacopoGhilardi/amILate/internal/utils"
@@ -10,25 +12,90 @@ import (
 )
 
 type UserHandler struct {
-	service *service.UserService
+	service     *service.UserService
+	authService *service.AuthService
 }
 
-func NewUserHandler(service *service.UserService) *UserHandler {
-	return &UserHandler{service: service}
+func NewUserHandler(service *service.UserService, authService *service.AuthService) *UserHandler {
+	return &UserHandler{
+		service:     service,
+		authService: authService,
+	}
 }
 
 func (h *UserHandler) Register(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]string{
-		"status": "OK",
-		"token":  "Ciao",
-	})
+	var registerDto dto.RegistrationDto
+
+	if err := c.Bind(&registerDto); err != nil {
+		return c.JSON(http.StatusBadRequest, ErrorResponse{
+			Error:   "Invalid request body",
+			Message: err.Error(),
+		})
+	}
+
+	if err := c.Validate(&registerDto); err != nil {
+		return c.JSON(http.StatusBadRequest, ErrorResponse{
+			Error:   "Validation failed",
+			Message: err.Error(),
+		})
+	}
+
+	response, err := h.authService.Register(registerDto)
+	if err != nil {
+		if strings.Contains(err.Error(), "already registered") {
+			return c.JSON(http.StatusConflict, ErrorResponse{
+				Error:   "Email already registered",
+				Message: err.Error(),
+			})
+		}
+		if strings.Contains(err.Error(), "do not match") {
+			return c.JSON(http.StatusBadRequest, ErrorResponse{
+				Error:   "Passwords do not match",
+				Message: err.Error(),
+			})
+		}
+		return c.JSON(http.StatusInternalServerError, ErrorResponse{
+			Error:   "Registration failed",
+			Message: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusCreated, response)
 }
 
 func (h *UserHandler) Login(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]string{
-		"status": "OK",
-		"token":  "Ciao",
-	})
+	var loginDto dto.LoginDto
+
+	// Bind e validazione
+	if err := c.Bind(&loginDto); err != nil {
+		return c.JSON(http.StatusBadRequest, ErrorResponse{
+			Error:   "Invalid request body",
+			Message: err.Error(),
+		})
+	}
+
+	if err := c.Validate(&loginDto); err != nil {
+		return c.JSON(http.StatusBadRequest, ErrorResponse{
+			Error:   "Validation failed",
+			Message: err.Error(),
+		})
+	}
+
+	response, err := h.authService.Login(loginDto)
+	if err != nil {
+		if strings.Contains(err.Error(), "invalid email or password") {
+			return c.JSON(http.StatusUnauthorized, ErrorResponse{
+				Error:   "Invalid credentials",
+				Message: "Invalid email or password",
+			})
+		}
+		return c.JSON(http.StatusInternalServerError, ErrorResponse{
+			Error:   "Login failed",
+			Message: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, response)
 }
 
 func (h *UserHandler) GetAllUsers(c echo.Context) error {
@@ -72,4 +139,9 @@ func (h *UserHandler) DeleteUser(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 	return c.NoContent(http.StatusNoContent)
+}
+
+type ErrorResponse struct {
+	Error   string `json:"error"`
+	Message string `json:"message"`
 }

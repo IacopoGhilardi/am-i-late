@@ -1,7 +1,7 @@
 package route
 
 import (
-	handler2 "github.com/iacopoGhilardi/amILate/internal/handler"
+	"github.com/iacopoGhilardi/amILate/internal/handler"
 	"github.com/iacopoGhilardi/amILate/internal/repository"
 	"github.com/iacopoGhilardi/amILate/internal/service"
 	"github.com/labstack/echo/v4"
@@ -9,8 +9,10 @@ import (
 
 func InitUserRoutes(e *echo.Group) {
 	repository := repository.NewUserRepository()
-	service := service.NewUserService(repository)
-	handler := handler2.NewUserHandler(service)
+	userService := service.NewUserService(repository)
+	authService := service.NewAuthService(repository)
+
+	handler := handler.NewUserHandler(userService, authService)
 
 	e.GET("/users", handler.GetAllUsers)
 	e.GET("/users/:id", handler.GetUserByID)
