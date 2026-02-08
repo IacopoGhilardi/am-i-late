@@ -7,10 +7,10 @@ import (
 )
 
 type AppointmentService struct {
-	repo *repository.AppointmentRepository
+	repo repository.AppointmentRepositoryInterface
 }
 
-func NewAppointmentService(repo *repository.AppointmentRepository) *AppointmentService {
+func NewAppointmentService(repo repository.AppointmentRepositoryInterface) *AppointmentService {
 	return &AppointmentService{
 		repo: repo,
 	}
