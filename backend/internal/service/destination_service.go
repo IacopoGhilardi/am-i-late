@@ -2,14 +2,14 @@ package service
 
 import (
 	"github.com/iacopoGhilardi/amILate/internal/model"
-	"github.com/iacopoGhilardi/amILate/internal/repository"
+	"github.com/iacopoGhilardi/amILate/internal/repository/interface"
 )
 
 type DestinationService struct {
-	repo repository.DestinationRepositoryInterface
+	repo _interface.DestinationRepositoryInterface
 }
 
-func NewDestinationService(repo repository.DestinationRepositoryInterface) *DestinationService {
+func NewDestinationService(repo _interface.DestinationRepositoryInterface) *DestinationService {
 	return &DestinationService{
 		repo: repo,
 	}

@@ -3,15 +3,15 @@ package service
 import (
 	"github.com/google/uuid"
 	"github.com/iacopoGhilardi/amILate/internal/model"
-	"github.com/iacopoGhilardi/amILate/internal/repository"
+	"github.com/iacopoGhilardi/amILate/internal/repository/interface"
 	"github.com/iacopoGhilardi/amILate/internal/utils/security"
 )
 
 type UserService struct {
-	repo repository.UserRepositoryInterface
+	repo _interface.UserRepositoryInterface
 }
 
-func NewUserService(repo repository.UserRepositoryInterface) *UserService {
+func NewUserService(repo _interface.UserRepositoryInterface) *UserService {
 	return &UserService{
 		repo: repo,
 	}

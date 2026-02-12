@@ -1,4 +1,4 @@
-package repository
+package _interface
 
 import "github.com/iacopoGhilardi/amILate/internal/model"
 

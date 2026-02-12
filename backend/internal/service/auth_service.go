@@ -5,17 +5,17 @@ import (
 
 	"github.com/iacopoGhilardi/amILate/internal/dto"
 	"github.com/iacopoGhilardi/amILate/internal/mapper"
-	"github.com/iacopoGhilardi/amILate/internal/repository"
+	"github.com/iacopoGhilardi/amILate/internal/repository/interface"
 	"github.com/iacopoGhilardi/amILate/internal/utils/logger"
 	"github.com/iacopoGhilardi/amILate/internal/utils/security"
 	"gorm.io/gorm"
 )
 
 type AuthService struct {
-	repo repository.UserRepositoryInterface
+	repo _interface.UserRepositoryInterface
 }
 
-func NewAuthService(userRepo repository.UserRepositoryInterface) *AuthService {
+func NewAuthService(userRepo _interface.UserRepositoryInterface) *AuthService {
 	return &AuthService{
 		repo: userRepo,
 	}

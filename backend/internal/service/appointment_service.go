@@ -3,14 +3,14 @@ package service
 import (
 	"github.com/google/uuid"
 	"github.com/iacopoGhilardi/amILate/internal/model"
-	"github.com/iacopoGhilardi/amILate/internal/repository"
+	"github.com/iacopoGhilardi/amILate/internal/repository/interface"
 )
 
 type AppointmentService struct {
-	repo repository.AppointmentRepositoryInterface
+	repo _interface.AppointmentRepositoryInterface
 }
 
-func NewAppointmentService(repo repository.AppointmentRepositoryInterface) *AppointmentService {
+func NewAppointmentService(repo _interface.AppointmentRepositoryInterface) *AppointmentService {
 	return &AppointmentService{
 		repo: repo,
 	}

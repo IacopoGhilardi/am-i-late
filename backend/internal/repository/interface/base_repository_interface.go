@@ -1,4 +1,4 @@
-package repository
+package _interface
 
 type BaseRepositoryInterface[T any] interface {
 	FindAll() ([]T, error)

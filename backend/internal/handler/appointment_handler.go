@@ -6,16 +6,16 @@ import (
 	"github.com/google/uuid"
 	"github.com/iacopoGhilardi/amILate/internal/dto"
 	"github.com/iacopoGhilardi/amILate/internal/mapper"
-	"github.com/iacopoGhilardi/amILate/internal/service"
+	_interface "github.com/iacopoGhilardi/amILate/internal/service/interface"
 	"github.com/iacopoGhilardi/amILate/internal/utils/logger"
 	"github.com/labstack/echo/v4"
 )
 
 type AppointmentHandler struct {
-	service *service.AppointmentService
+	service _interface.AppointmentServiceInterface
 }
 
-func NewAppointmentHandler(service *service.AppointmentService) *AppointmentHandler {
+func NewAppointmentHandler(service _interface.AppointmentServiceInterface) *AppointmentHandler {
 	return &AppointmentHandler{service: service}
 }
 
@@ -44,7 +44,13 @@ func (h *AppointmentHandler) GetAppointmentByPublicId(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]string{"error": "appointment not found"})
 	}
-	return c.JSON(http.StatusOK, appointment)
+	if appointment == nil {
+		logger.Info("Appointment not found for id: " + id + "")
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "appointment not found"})
+	}
+	logger.Info("Appointment found for id: " + id + "")
+	appointmentDto := mapper.MapAppointmentToDto(*appointment)
+	return c.JSON(http.StatusOK, appointmentDto)
 }
 
 func (h *AppointmentHandler) CreateAppointment(c echo.Context) error {
@@ -58,8 +64,9 @@ func (h *AppointmentHandler) CreateAppointment(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
-	logger.Info("Appointment created")
-	return c.JSON(http.StatusCreated, createdApp)
+	logger.Info("Appointment created: " + createdApp.PublicId.String())
+	appointmentDto := mapper.MapAppointmentToDto(*createdApp)
+	return c.JSON(http.StatusCreated, appointmentDto)
 }
 
 func (h *AppointmentHandler) DeleteAppointment(c echo.Context) error {
@@ -68,7 +75,7 @@ func (h *AppointmentHandler) DeleteAppointment(c echo.Context) error {
 	logger.Info("Deleting appointment by id: " + id)
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "invalid id"})
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid id"})
 	}
 
 	if err := h.service.DeleteAppointmentFromPublicId(parsedUuid); err != nil {

@@ -6,29 +6,30 @@ import (
 
 	"github.com/iacopoGhilardi/amILate/internal/dto"
 	"github.com/iacopoGhilardi/amILate/internal/mapper"
-	"github.com/iacopoGhilardi/amILate/internal/service"
+	_interface "github.com/iacopoGhilardi/amILate/internal/service/interface"
 	"github.com/iacopoGhilardi/amILate/internal/utils/logger"
 	"github.com/labstack/echo/v4"
 )
 
 type DestinationHandler struct {
-	service *service.DestinationService
+	service _interface.DestinationServiceInterface
 }
 
-func NewDestinationHandler(service *service.DestinationService) *DestinationHandler {
+func NewDestinationHandler(service _interface.DestinationServiceInterface) *DestinationHandler {
 	return &DestinationHandler{service: service}
 }
 
 func (h *DestinationHandler) GetAllDestinations(c echo.Context) error {
 	logger.Info("Getting all destinations")
 	dests, err := h.service.GetAllDestinations()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
 	var destinationDtos []dto.DestinationDto
 	for _, d := range dests {
 		destinationDtos = append(destinationDtos, *mapper.MapDestinationToDto(d))
 	}
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
-	}
+
 	return c.JSON(http.StatusOK, destinationDtos)
 }
 

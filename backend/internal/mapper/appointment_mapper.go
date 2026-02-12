@@ -6,9 +6,15 @@ import (
 )
 
 func MapAppointmentToDto(appointment model.Appointment) *dto.AppointmentDto {
+	var destination *dto.DestinationDto
+
+	if appointment.Destination != nil {
+		destination = MapDestinationToDto(*appointment.Destination)
+	}
+
 	return &dto.AppointmentDto{
 		ID:                     appointment.PublicId,
-		Destination:            *MapDestinationToDto(appointment.Destination),
+		Destination:            *destination,
 		EstimatedTravelMinutes: appointment.EstimatedTravelMinutes,
 		ScheduledAt:            appointment.ScheduledAt,
 		Status:                 appointment.Status,

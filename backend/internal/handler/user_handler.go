@@ -7,16 +7,17 @@ import (
 	"github.com/iacopoGhilardi/amILate/internal/dto"
 	"github.com/iacopoGhilardi/amILate/internal/model"
 	"github.com/iacopoGhilardi/amILate/internal/service"
+	_interface "github.com/iacopoGhilardi/amILate/internal/service/interface"
 	"github.com/iacopoGhilardi/amILate/internal/utils"
 	"github.com/labstack/echo/v4"
 )
 
 type UserHandler struct {
-	service     *service.UserService
+	service     _interface.UserServiceInterface
 	authService *service.AuthService
 }
 
-func NewUserHandler(service *service.UserService, authService *service.AuthService) *UserHandler {
+func NewUserHandler(service _interface.UserServiceInterface, authService *service.AuthService) *UserHandler {
 	return &UserHandler{
 		service:     service,
 		authService: authService,
@@ -66,7 +67,6 @@ func (h *UserHandler) Register(c echo.Context) error {
 func (h *UserHandler) Login(c echo.Context) error {
 	var loginDto dto.LoginDto
 
-	// Bind e validazione
 	if err := c.Bind(&loginDto); err != nil {
 		return c.JSON(http.StatusBadRequest, ErrorResponse{
 			Error:   "Invalid request body",
