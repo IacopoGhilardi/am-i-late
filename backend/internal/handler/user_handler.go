@@ -5,16 +5,18 @@ import (
 	"strings"
 
 	"github.com/iacopoGhilardi/amILate/internal/dto"
+	"github.com/iacopoGhilardi/amILate/internal/mapper"
 	"github.com/iacopoGhilardi/amILate/internal/model"
 	"github.com/iacopoGhilardi/amILate/internal/service"
 	_interface "github.com/iacopoGhilardi/amILate/internal/service/interface"
 	"github.com/iacopoGhilardi/amILate/internal/utils"
+	"github.com/iacopoGhilardi/amILate/internal/utils/logger"
 	"github.com/labstack/echo/v4"
 )
 
 type UserHandler struct {
 	service     _interface.UserServiceInterface
-	authService *service.AuthService
+	authService _interface.AuthServiceInterface
 }
 
 func NewUserHandler(service _interface.UserServiceInterface, authService *service.AuthService) *UserHandler {
@@ -99,11 +101,17 @@ func (h *UserHandler) Login(c echo.Context) error {
 }
 
 func (h *UserHandler) GetAllUsers(c echo.Context) error {
+	logger.Info("Getting all users")
 	users, err := h.service.GetAllUsers()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
-	return c.JSON(http.StatusOK, users)
+
+	var userDtos []dto.UserDto
+	for _, user := range users {
+		userDtos = append(userDtos, *mapper.MapUserToDto(user))
+	}
+	return c.JSON(http.StatusOK, userDtos)
 }
 
 func (h *UserHandler) GetUserByID(c echo.Context) error {

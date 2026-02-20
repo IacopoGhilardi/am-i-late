@@ -23,13 +23,9 @@ func main() {
 
 	apiV1 := echoInstance.Group("/api/v1")
 
-	//Commons
+	// Routes
 	commons.InitUtilityRoute(apiV1)
-
-	//User
 	route.InitUserRoutes(apiV1)
-
-	//Destination
 	route.InitDestinationRoutes(apiV1)
 	route.InitAppointmentRoutes(apiV1)
 

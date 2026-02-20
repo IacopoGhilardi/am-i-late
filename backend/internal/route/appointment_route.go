@@ -2,6 +2,7 @@ package route
 
 import (
 	"github.com/iacopoGhilardi/amILate/internal/handler"
+	"github.com/iacopoGhilardi/amILate/internal/middleware"
 	"github.com/iacopoGhilardi/amILate/internal/repository"
 	"github.com/iacopoGhilardi/amILate/internal/service"
 	"github.com/labstack/echo/v4"
@@ -12,6 +13,7 @@ func InitAppointmentRoutes(e *echo.Group) {
 	service := service.NewAppointmentService(repository)
 	handler := handler.NewAppointmentHandler(service)
 
+	e.Use(middleware.JWTMiddleware())
 	e.GET("/appointments", handler.GetAllAppointments)
 	e.GET("/appointments/:id", handler.GetAppointmentByPublicId)
 	e.POST("/appointments", handler.CreateAppointment)
