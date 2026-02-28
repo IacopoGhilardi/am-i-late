@@ -5,10 +5,10 @@ type RegistrationDto struct {
 	Password           string `json:"password"`
 	ConfirmPassword    string `json:"confirm_password"`
 	Name               string `json:"name"`
-	AgeConfirmed       bool
-	PrivacyAccepted    bool
-	TermsAccepted      bool
-	LocationPermission bool
+	AgeConfirmed       bool   `json:"age_confirmed"`
+	PrivacyAccepted    bool   `json:"privacy_accepted"`
+	TermsAccepted      bool   `json:"terms_accepted"`
+	LocationPermission bool   `json:"location_permission"`
 }
 
 type LoginDto struct {

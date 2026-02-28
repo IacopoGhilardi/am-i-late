@@ -1,19 +1,13 @@
 package route
 
 import (
-	"github.com/iacopoGhilardi/amILate/internal/handler"
+	"github.com/iacopoGhilardi/amILate/internal/app"
 	"github.com/iacopoGhilardi/amILate/internal/middleware"
-	"github.com/iacopoGhilardi/amILate/internal/repository"
-	"github.com/iacopoGhilardi/amILate/internal/service"
 	"github.com/labstack/echo/v4"
 )
 
-func InitUserRoutes(e *echo.Group) {
-	repository := repository.NewUserRepository()
-	userService := service.NewUserService(repository)
-	authService := service.NewAuthService(repository)
-
-	handler := handler.NewUserHandler(userService, authService)
+func InitUserRoutes(e *echo.Group, a *app.App) {
+	handler := a.UserHandler
 
 	e.POST("/users/login", handler.Login)
 	e.POST("/users/register", handler.Register)

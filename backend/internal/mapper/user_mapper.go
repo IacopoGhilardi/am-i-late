@@ -8,6 +8,7 @@ import (
 
 func MapUserToDto(user model.User) *dto.UserDto {
 	return &dto.UserDto{
+		Id:                 user.PublicID,
 		Email:              user.Email,
 		Name:               user.Name,
 		AgeConfirmed:       user.AgeConfirmed,

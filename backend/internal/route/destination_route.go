@@ -1,17 +1,13 @@
 package route
 
 import (
-	"github.com/iacopoGhilardi/amILate/internal/handler"
+	"github.com/iacopoGhilardi/amILate/internal/app"
 	"github.com/iacopoGhilardi/amILate/internal/middleware"
-	"github.com/iacopoGhilardi/amILate/internal/repository"
-	"github.com/iacopoGhilardi/amILate/internal/service"
 	"github.com/labstack/echo/v4"
 )
 
-func InitDestinationRoutes(e *echo.Group) {
-	repository := repository.NewDestinationRepository()
-	service := service.NewDestinationService(repository)
-	handler := handler.NewDestinationHandler(service)
+func InitDestinationRoutes(e *echo.Group, a *app.App) {
+	handler := a.DestinationHandler
 
 	e.Use(middleware.JWTMiddleware())
 	e.GET("/destinations", handler.GetAllDestinations)

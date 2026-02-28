@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS amilate.users (
     public_id UUID UNIQUE NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
     age_confirmed BOOLEAN NOT NULL DEFAULT FALSE,
     privacy_accepted BOOLEAN NOT NULL DEFAULT FALSE,
     terms_accepted BOOLEAN NOT NULL DEFAULT FALSE,

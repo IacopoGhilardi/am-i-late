@@ -1,17 +1,13 @@
 package route
 
 import (
-	"github.com/iacopoGhilardi/amILate/internal/handler"
+	"github.com/iacopoGhilardi/amILate/internal/app"
 	"github.com/iacopoGhilardi/amILate/internal/middleware"
-	"github.com/iacopoGhilardi/amILate/internal/repository"
-	"github.com/iacopoGhilardi/amILate/internal/service"
 	"github.com/labstack/echo/v4"
 )
 
-func InitAppointmentRoutes(e *echo.Group) {
-	repository := repository.NewAppointmentRepository()
-	service := service.NewAppointmentService(repository)
-	handler := handler.NewAppointmentHandler(service)
+func InitAppointmentRoutes(e *echo.Group, a *app.App) {
+	handler := a.AppointmentHandler
 
 	e.Use(middleware.JWTMiddleware())
 	e.GET("/appointments", handler.GetAllAppointments)

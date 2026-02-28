@@ -1,20 +1,23 @@
 package db
 
 import (
-	"github.com/iacopoGhilardi/amILate/internal/utils/logger"
+	log "github.com/iacopoGhilardi/amILate/internal/utils/logger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var DB *gorm.DB
 
 func Connect(connectionString string) {
 	var err error
-	DB, err = gorm.Open(postgres.Open(connectionString), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open(connectionString), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
 	if err != nil {
-		logger.Fatal("Error while connecting to db: %v", err)
+		log.Fatal("Error while connecting to db: %v", err)
 	}
-	logger.Info("Postgres DB connected")
+	log.Info("Postgres DB connected")
 }
 
 func Ping() error {
@@ -27,7 +30,7 @@ func Ping() error {
 
 func GetDB() *gorm.DB {
 	if DB == nil {
-		logger.Fatal("❌ Db not initialized, call db.Connect()")
+		log.Fatal("❌ Db not initialized, call db.Connect()")
 	}
 	return DB
 }
