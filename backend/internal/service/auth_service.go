@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"time"
 
 	"github.com/iacopoGhilardi/amILate/internal/dto"
 	"github.com/iacopoGhilardi/amILate/internal/mapper"
@@ -59,7 +60,7 @@ func (s *AuthService) Register(registerDto dto.RegistrationDto) (*dto.LoginRespo
 
 	return &dto.LoginResponseDto{
 		Token:     token,
-		ExpiresAt: 0,
+		ExpiresAt: time.Now().Add(24 * time.Hour),
 	}, nil
 }
 
@@ -82,6 +83,7 @@ func (s *AuthService) Login(loginDto dto.LoginDto) (*dto.LoginResponseDto, error
 	}
 
 	return &dto.LoginResponseDto{
-		Token: token,
+		Token:     token,
+		ExpiresAt: time.Now().Add(24 * time.Hour),
 	}, nil
 }

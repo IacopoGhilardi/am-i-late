@@ -43,7 +43,7 @@ func NewApp(cfg *config.Config) *App {
 	return &App{
 		UserHandler:        handler.NewUserHandler(userService, authService),
 		AppointmentHandler: handler.NewAppointmentHandler(appointmentService),
-		DestinationHandler: handler.NewDestinationHandler(destinationService),
+		DestinationHandler: handler.NewDestinationHandler(destinationService, mapService),
 		AppointmentService: appointmentService,
 		UserService:        userService,
 		DestinationService: destinationService,

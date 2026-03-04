@@ -5,9 +5,9 @@ import (
 )
 
 func NewClient(apiKey string) (*maps.Client, error) {
-	c, err := maps.NewClient(maps.WithAPIKey(apiKey))
+	client, err := maps.NewClient(maps.WithAPIKey(apiKey))
 	if err != nil {
 		return nil, err
 	}
-	return c, nil
+	return client, nil
 }
