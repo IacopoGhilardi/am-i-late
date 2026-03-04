@@ -1,6 +1,8 @@
 package config
 
 import (
+	"time"
+
 	"github.com/iacopoGhilardi/amILate/internal/utils/logger"
 	"github.com/spf13/viper"
 )
@@ -10,13 +12,13 @@ type Config struct {
 	DbUrl      string `mapstructure:"DB_URL"`
 	JwtSecret  string `mapstructure:"JWT_SECRET"`
 
-	//Tom Tom
-	TomTomApiKey  string `mapstructure:"REST_CLIENT_TOMTOM_API_KEY"`
-	TomTomBaseUrl string `mapstructure:"REST_CLIENT_TOMTOM_BASE_URL"`
-	TomTomTimeout int    `mapstructure:"REST_CLIENT_TOMTOM_TIMEOUT" default:"10"`
+	//Google maps
+	GoogleMapsApiKey  string        `mapstructure:"GOOGLE_MAPS_API_KEY"`
+	GoogleMapsBaseUrl string        `mapstructure:"GOOGLE_MAPS_API_BASE_URL"`
+	GoogleMapsTimeout time.Duration `mapstructure:"GOOGLE_MAPS_API_TIMEOUT" default:"10000"`
 }
 
-func LoadConfig(path string) (Config, error) {
+func LoadConfig(path string) (*Config, error) {
 	var config Config
 
 	viper.AddConfigPath(path)
@@ -30,8 +32,8 @@ func LoadConfig(path string) (Config, error) {
 
 	if err := viper.Unmarshal(&config); err != nil {
 		logger.Error("Failed to unmarshal config: %v", err)
-		return config, err
+		return &config, err
 	}
 
-	return config, nil
+	return &config, nil
 }

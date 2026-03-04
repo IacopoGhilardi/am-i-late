@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-var transportModes = []string{"car", "public_transport", "foot"}
+var transportModes = []string{"car", "public_transport", "walk"}
 var DefaultTransportMode = transportModes[0]
 var notificationStates = []string{"pending", "monitoring", "sent", "cancelled"}
 var statuses = []string{"scheduled", "completed", "cancelled"}

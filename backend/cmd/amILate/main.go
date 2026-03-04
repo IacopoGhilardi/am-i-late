@@ -20,7 +20,7 @@ func main() {
 	}
 	logger.Info("config loaded: %+v", cfg)
 
-	a := app.NewApp()
+	a := app.NewApp(cfg)
 
 	security.SetJWTSecret(cfg.JwtSecret)
 	db.Connect(cfg.DbUrl)

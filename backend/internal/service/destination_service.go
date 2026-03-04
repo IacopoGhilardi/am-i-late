@@ -36,3 +36,7 @@ func (s *DestinationService) CreateDestination(d *model.Destination) (*model.Des
 func (s *DestinationService) DeleteDestination(id uint) error {
 	return s.repo.Delete(id)
 }
+
+func (s *DestinationService) UpdateDestination(d *model.Destination) (*model.Destination, error) {
+	return d, nil
+}
