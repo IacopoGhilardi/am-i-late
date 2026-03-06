@@ -16,6 +16,11 @@ type Config struct {
 	GoogleMapsApiKey  string        `mapstructure:"GOOGLE_MAPS_API_KEY"`
 	GoogleMapsBaseUrl string        `mapstructure:"GOOGLE_MAPS_API_BASE_URL"`
 	GoogleMapsTimeout time.Duration `mapstructure:"GOOGLE_MAPS_API_TIMEOUT" default:"10000"`
+
+	// Email
+	ResendApiKey     string `mapstructure:"RESEND_API_KEY"`
+	EmailFromAddress string `mapstructure:"EMAIL_FROM_ADDRESS"`
+	ResetPasswordURL string `mapstructure:"RESET_PASSWORD_URL"`
 }
 
 func LoadConfig(path string) (*Config, error) {

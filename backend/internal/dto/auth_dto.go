@@ -23,3 +23,13 @@ type LoginResponseDto struct {
 	RefreshToken string    `json:"refresh_token,omitempty"`
 	ExpiresAt    time.Time `json:"expires_at"`
 }
+
+type ForgotPasswordDto struct {
+	Email string `json:"email" validate:"required,email"`
+}
+
+type ResetPasswordDto struct {
+	Token           string `json:"token" validate:"required"`
+	NewPassword     string `json:"new_password" validate:"required,min=8"`
+	ConfirmPassword string `json:"confirm_password" validate:"required,min=8"`
+}

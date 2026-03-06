@@ -35,6 +35,10 @@ func (r *BaseRepository[T]) Save(entity *T) error {
 	return r.Db.Save(entity).Error
 }
 
+func (r *BaseRepository[T]) Update(entity *T) error {
+	return r.Db.Updates(entity).Error
+}
+
 func (r *BaseRepository[T]) Delete(id uint) error {
 	var entity T
 	return r.Db.Delete(&entity, id).Error

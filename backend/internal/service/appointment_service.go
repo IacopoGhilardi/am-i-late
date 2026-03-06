@@ -37,6 +37,14 @@ func (s *AppointmentService) DeleteAppointment(id uint) error {
 	return s.repo.Delete(id)
 }
 
+func (s *AppointmentService) UpdateAppointment(a *model.Appointment) (*model.Appointment, error) {
+	err := s.repo.Update(a)
+	if err != nil {
+		return nil, err
+	}
+	return a, nil
+}
+
 func (s *AppointmentService) DeleteAppointmentFromPublicId(publicId uuid.UUID) error {
 	app, err := s.repo.FindByPublicId(publicId)
 	if err != nil {

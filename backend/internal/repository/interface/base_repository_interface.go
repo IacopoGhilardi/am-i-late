@@ -5,4 +5,5 @@ type BaseRepositoryInterface[T any] interface {
 	Find(id uint) (*T, error)
 	Save(entity *T) error
 	Delete(id uint) error
+	Update(entity *T) error
 }

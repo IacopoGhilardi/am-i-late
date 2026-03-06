@@ -38,5 +38,9 @@ func (s *DestinationService) DeleteDestination(id uint) error {
 }
 
 func (s *DestinationService) UpdateDestination(d *model.Destination) (*model.Destination, error) {
+	err := s.repo.Update(d)
+	if err != nil {
+		return nil, err
+	}
 	return d, nil
 }

@@ -5,4 +5,6 @@ import "github.com/iacopoGhilardi/amILate/internal/dto"
 type AuthServiceInterface interface {
 	Register(registerDto dto.RegistrationDto) (*dto.LoginResponseDto, error)
 	Login(loginDto dto.LoginDto) (*dto.LoginResponseDto, error)
+	ForgotPassword(forgotDto dto.ForgotPasswordDto)
+	ResetPassword(resetDto dto.ResetPasswordDto) error
 }

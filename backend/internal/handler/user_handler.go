@@ -112,3 +112,30 @@ func (h *UserHandler) DeleteUser(c echo.Context) error {
 	}
 	return c.NoContent(http.StatusNoContent)
 }
+
+func (h *UserHandler) ForgotPassword(c echo.Context) error {
+	var forgotDto dto.ForgotPasswordDto
+	if err := c.Bind(&forgotDto); err != nil {
+		return c.JSON(http.StatusBadRequest, commons.Fail(err.Error()))
+	}
+	if err := c.Validate(&forgotDto); err != nil {
+		return c.JSON(http.StatusBadRequest, commons.Fail(err.Error()))
+	}
+	// Ritorna sempre 200 per non rivelare se l'email esiste o meno
+	_ = h.authService.ForgotPassword(forgotDto)
+	return c.JSON(http.StatusOK, commons.Success("if the email exists, you will receive a reset link"))
+}
+
+func (h *UserHandler) ResetPassword(c echo.Context) error {
+	var resetDto dto.ResetPasswordDto
+	if err := c.Bind(&resetDto); err != nil {
+		return c.JSON(http.StatusBadRequest, commons.Fail(err.Error()))
+	}
+	if err := c.Validate(&resetDto); err != nil {
+		return c.JSON(http.StatusBadRequest, commons.Fail(err.Error()))
+	}
+	if err := h.authService.ResetPassword(resetDto); err != nil {
+		return c.JSON(http.StatusBadRequest, commons.Fail(err.Error()))
+	}
+	return c.JSON(http.StatusOK, commons.Success("password reset successfully"))
+}

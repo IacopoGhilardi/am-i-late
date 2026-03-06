@@ -11,6 +11,8 @@ func InitUserRoutes(e *echo.Group, a *app.App) {
 
 	e.POST("/users/login", handler.Login)
 	e.POST("/users/register", handler.Register)
+	e.POST("/users/forgot-password", handler.ForgotPassword)
+	e.POST("/users/reset-password", handler.ResetPassword)
 
 	protected := e.Group("")
 	protected.Use(middleware.JWTMiddleware())

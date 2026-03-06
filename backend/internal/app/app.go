@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/iacopoGhilardi/amILate/internal/client/googleMaps"
 	"github.com/iacopoGhilardi/amILate/internal/config"
+	"github.com/iacopoGhilardi/amILate/internal/email"
 	"github.com/iacopoGhilardi/amILate/internal/handler"
 	"github.com/iacopoGhilardi/amILate/internal/repository"
 	"github.com/iacopoGhilardi/amILate/internal/service"
@@ -21,17 +22,14 @@ type App struct {
 	DestinationService *service.DestinationService
 	AuthService        *service.AuthService
 	MapService         *service.MapService
+	EmailService       *service.EmailService
 }
 
 func NewApp(cfg *config.Config) *App {
 	userRepo := repository.NewUserRepository()
 	appointmentRepo := repository.NewAppointmentRepository()
 	destinationRepo := repository.NewDestinationRepository()
-
-	userService := service.NewUserService(userRepo)
-	authService := service.NewAuthService(userRepo)
-	appointmentService := service.NewAppointmentService(appointmentRepo)
-	destinationService := service.NewDestinationService(destinationRepo)
+	tokenRepo := repository.NewResetTokenRepository()
 
 	mapsClient, err := googleMaps.NewClient(cfg.GoogleMapsApiKey)
 	if err != nil {
@@ -39,6 +37,14 @@ func NewApp(cfg *config.Config) *App {
 	}
 
 	mapService := service.NewMapService(mapsClient)
+
+	emailClient := email.NewClient(cfg.ResendApiKey)
+	templateEngine := email.NewTemplateEngine("template")
+	emailService := service.NewEmailService(emailClient, templateEngine, cfg)
+	userService := service.NewUserService(userRepo)
+	authService := service.NewAuthService(userRepo, tokenRepo, emailService, templateEngine)
+	appointmentService := service.NewAppointmentService(appointmentRepo)
+	destinationService := service.NewDestinationService(destinationRepo)
 
 	return &App{
 		UserHandler:        handler.NewUserHandler(userService, authService),
@@ -49,5 +55,6 @@ func NewApp(cfg *config.Config) *App {
 		DestinationService: destinationService,
 		AuthService:        authService,
 		MapService:         mapService,
+		EmailService:       emailService,
 	}
 }
