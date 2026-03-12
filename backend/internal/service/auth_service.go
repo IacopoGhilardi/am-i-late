@@ -113,7 +113,6 @@ func (s *AuthService) ForgotPassword(forgotDto dto.ForgotPasswordDto) error {
 
 	user, err := s.repo.FindByEmail(forgotDto.Email)
 	if err != nil {
-		// Non rivelare se l'email esiste o meno per sicurezza
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil
 		}
@@ -134,7 +133,7 @@ func (s *AuthService) ForgotPassword(forgotDto dto.ForgotPasswordDto) error {
 		return err
 	}
 
-	// Renderizza il template email
+	// Render email template
 	resetURL := resetPasswordBaseURL + "?token=" + token
 	html, err := s.templateEngine.Render(email.TemplateResetPasswordEmail, map[string]string{
 		"ResetURL": resetURL,
@@ -143,7 +142,7 @@ func (s *AuthService) ForgotPassword(forgotDto dto.ForgotPasswordDto) error {
 		return err
 	}
 
-	// Manda l'email
+	// Send email
 	return s.emailService.SendResetPasswordEmail(user.Email, html)
 }
 
@@ -154,7 +153,6 @@ func (s *AuthService) ResetPassword(resetDto dto.ResetPasswordDto) error {
 		return errors.New("passwords do not match")
 	}
 
-	// Verifica il token
 	resetToken, err := s.tokenRepo.FindByToken(resetDto.Token)
 	if err != nil {
 		return errors.New("token non valido")
@@ -166,7 +164,6 @@ func (s *AuthService) ResetPassword(resetDto dto.ResetPasswordDto) error {
 		return errors.New("token già utilizzato")
 	}
 
-	// Aggiorna la password
 	user, err := s.repo.Find(resetToken.UserID)
 	if err != nil {
 		return err
@@ -179,8 +176,7 @@ func (s *AuthService) ResetPassword(resetDto dto.ResetPasswordDto) error {
 	if err := s.repo.Update(user); err != nil {
 		return err
 	}
-
-	// Invalida il token
+	
 	now := time.Now()
 	resetToken.UsedAt = &now
 	return s.tokenRepo.Update(resetToken)

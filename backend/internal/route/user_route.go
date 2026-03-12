@@ -20,4 +20,5 @@ func InitUserRoutes(e *echo.Group, a *app.App) {
 	protected.GET("/users/:id", handler.GetUserByID)
 	protected.POST("/users", handler.CreateUser)
 	protected.DELETE("/users/:id", handler.DeleteUser)
+	protected.POST("/users/location", handler.UpdateLocation)
 }

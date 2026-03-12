@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS amilate.users (
     privacy_accepted BOOLEAN NOT NULL DEFAULT FALSE,
     terms_accepted BOOLEAN NOT NULL DEFAULT FALSE,
     location_permission BOOLEAN NOT NULL DEFAULT FALSE,
+    device_token VARCHAR(255),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMPTZ

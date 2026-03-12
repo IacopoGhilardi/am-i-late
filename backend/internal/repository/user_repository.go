@@ -14,8 +14,8 @@ func NewUserRepository() *UserRepository {
 	return &UserRepository{
 		BaseRepository: NewBaseRepository[model.User](db.GetDB()),
 	}
-}
 
+}
 func (r *UserRepository) FindByPublicId(publicId uuid.UUID) (*model.User, error) {
 	var user model.User
 	err := r.Db.Where("public_id = ?", publicId).First(&user).Error

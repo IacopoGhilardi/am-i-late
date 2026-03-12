@@ -33,7 +33,6 @@ func GenerateJWT(publicId uuid.UUID, email string) (string, error) {
 
 func ValidateJWT(tokenString string) (*JwtClaims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &JwtClaims{}, func(token *jwt.Token) (interface{}, error) {
-		// Verifica che il metodo di signing sia quello atteso
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("unexpected signing method")
 		}

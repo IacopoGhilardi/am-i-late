@@ -7,6 +7,7 @@ import (
 	"github.com/iacopoGhilardi/amILate/internal/commons"
 	"github.com/iacopoGhilardi/amILate/internal/dto"
 	"github.com/iacopoGhilardi/amILate/internal/mapper"
+	"github.com/iacopoGhilardi/amILate/internal/middleware"
 	"github.com/iacopoGhilardi/amILate/internal/model"
 	_interface "github.com/iacopoGhilardi/amILate/internal/service/interface"
 	"github.com/iacopoGhilardi/amILate/internal/utils"
@@ -15,14 +16,19 @@ import (
 )
 
 type UserHandler struct {
-	service     _interface.UserServiceInterface
-	authService _interface.AuthServiceInterface
+	service         _interface.UserServiceInterface
+	authService     _interface.AuthServiceInterface
+	locationService _interface.UserLocationServiceInterface
 }
 
-func NewUserHandler(service _interface.UserServiceInterface, authService _interface.AuthServiceInterface) *UserHandler {
+func NewUserHandler(
+	service _interface.UserServiceInterface,
+	authService _interface.AuthServiceInterface,
+	locationService _interface.UserLocationServiceInterface) *UserHandler {
 	return &UserHandler{
-		service:     service,
-		authService: authService,
+		service:         service,
+		authService:     authService,
+		locationService: locationService,
 	}
 }
 
@@ -121,7 +127,7 @@ func (h *UserHandler) ForgotPassword(c echo.Context) error {
 	if err := c.Validate(&forgotDto); err != nil {
 		return c.JSON(http.StatusBadRequest, commons.Fail(err.Error()))
 	}
-	// Ritorna sempre 200 per non rivelare se l'email esiste o meno
+
 	_ = h.authService.ForgotPassword(forgotDto)
 	return c.JSON(http.StatusOK, commons.Success("if the email exists, you will receive a reset link"))
 }
@@ -138,4 +144,25 @@ func (h *UserHandler) ResetPassword(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, commons.Fail(err.Error()))
 	}
 	return c.JSON(http.StatusOK, commons.Success("password reset successfully"))
+}
+
+func (h *UserHandler) UpdateLocation(c echo.Context) error {
+	claims, ok := middleware.GetClaims(c)
+	if !ok {
+		return c.JSON(http.StatusUnauthorized, commons.Fail("unauthorized"))
+	}
+
+	var locationDto dto.UpdateLocationDto
+	if err := c.Bind(&locationDto); err != nil {
+		return c.JSON(http.StatusBadRequest, commons.Fail(err.Error()))
+	}
+	if err := c.Validate(&locationDto); err != nil {
+		return c.JSON(http.StatusBadRequest, commons.Fail(err.Error()))
+	}
+
+	if err := h.locationService.UpdateLocation(claims.UserId, locationDto.Latitude, locationDto.Longitude); err != nil {
+		return c.JSON(http.StatusInternalServerError, commons.Fail(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, commons.Success("location updated"))
 }
