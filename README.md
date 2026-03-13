@@ -12,7 +12,3 @@ Currently, this repository contains the **backend**, which provides APIs to mana
 - Alarms
 
 The backend is built with Go and PostgreSQL, designed to be clean and easy to extend.
-
-## Goal
-
-The main goal of this project is to create a base for a smart alarm system that can eventually be used by a mobile application to provide real-time notifications and intelligent departure suggestions.
